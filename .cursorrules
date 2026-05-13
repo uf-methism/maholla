@@ -1,0 +1,22 @@
+# Cursor Rules — Mohalla Project
+# See AGENTS.md for full details.
+
+# Project: Mohalla — Hyperlocal Vendor Digitalisation Platform
+# Stack: React Native (Expo) · Next.js · Express · PostgreSQL · Claude API · Whisper API
+
+# OWNERSHIP RULES:
+# - backend/ and ai-services/ → Member A only
+# - apps/vendor/ and apps/customer-pwa/ → Member B only
+# - packages/shared-types/ → Both (with coordination)
+# - NEVER modify files outside your ownership zone
+
+# GIT RULES:
+# - Always work on feature branches (feat/<owner>/<desc> or fix/<owner>/<desc>)
+# - Use Conventional Commits
+# - Never push directly to main
+
+# CODE STYLE:
+# - TypeScript strict mode
+# - Named exports over default exports
+# - camelCase for variables, PascalCase for types/components
+# - Always handle errors explicitly

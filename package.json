@@ -1,0 +1,22 @@
+{
+  "name": "maholla",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Mohalla — Hyperlocal Vendor Digitalisation Platform",
+  "workspaces": [
+    "apps/*",
+    "backend",
+    "ai-services",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev:backend": "npm run dev --workspace=backend",
+    "dev:vendor": "npm run start --workspace=apps/vendor",
+    "dev:pwa": "npm run dev --workspace=apps/customer-pwa",
+    "lint": "npm run lint --workspaces --if-present",
+    "typecheck": "npm run typecheck --workspaces --if-present"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
