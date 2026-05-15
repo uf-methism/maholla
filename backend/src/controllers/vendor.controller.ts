@@ -46,7 +46,7 @@ export const createVendor = asyncHandler(async (req: Request, res: Response) => 
  *         description: Vendor not found
  */
 export const getVendor = asyncHandler(async (req: Request, res: Response) => {
-  const vendor = await vendorService.getVendor(req.params.id);
+  const vendor = await vendorService.getVendor(req.params.id as string);
   res.status(200).json({ status: 'success', data: vendor });
 });
 
@@ -76,7 +76,7 @@ export const getVendor = asyncHandler(async (req: Request, res: Response) => {
  *         description: Vendor not found
  */
 export const updateVendor = asyncHandler(async (req: Request, res: Response) => {
-  const vendor = await vendorService.updateVendor(req.params.id, req.body);
+  const vendor = await vendorService.updateVendor(req.params.id as string, req.body);
   res.status(200).json({ status: 'success', data: vendor });
 });
 
@@ -100,7 +100,7 @@ export const updateVendor = asyncHandler(async (req: Request, res: Response) => 
  *         description: Vendor not found
  */
 export const deleteVendor = asyncHandler(async (req: Request, res: Response) => {
-  await vendorService.deleteVendor(req.params.id);
+  await vendorService.deleteVendor(req.params.id as string);
   res.status(204).send();
 });
 
