@@ -1,196 +1,55 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
 }
-
-// -----------------------------------------------------------------------------
-// Enums
-// -----------------------------------------------------------------------------
-
-enum OrderStatus {
-  PENDING
-  ACCEPTED
-  PREPARING
-  READY
-  COMPLETED
-  CANCELLED
-}
-
-enum InventoryChangeReason {
-  SALE
-  RESTOCK
-  VOICE_COMMAND
-  MANUAL
-}
-
-enum MessageDirection {
-  INBOUND
-  OUTBOUND
-}
-
-// -----------------------------------------------------------------------------
-// Models
-// -----------------------------------------------------------------------------
 
 model Vendor {
-  id        String @id @default(uuid())
-  name      String
-  phone     String @unique
-  address   String
-  latitude  Float
-  longitude Float
+  id          String   @id @default(uuid())
+  storeName   String
+  ownerName   String?
+  phone       String?
+  category    String
+  address     String?
+  latitude    Float?
+  longitude   Float?
+  isOpen      Boolean  @default(true)
 
-  // Timestamps and Soft Delete
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  deletedAt DateTime?
+  products    Product[]
+  orders      Order[]
 
-  // Relations
-  products         Product[]
-  orders           Order[]
-  reviews          Review[]
-  voiceCommands    VoiceCommand[]
-  whatsappMessages WhatsAppMessage[]
-
-  @@index([latitude, longitude])
-}
-
-model Customer {
-  id        String  @id @default(uuid())
-  name      String
-  phone     String  @unique
-  address   String?
-  latitude  Float?
-  longitude Float?
-
-  // Timestamps and Soft Delete
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  deletedAt DateTime?
-
-  // Relations
-  orders           Order[]
-  reviews          Review[]
-  whatsappMessages WhatsAppMessage[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
 model Product {
-  id            String  @id @default(uuid())
-  vendorId      String
-  name          String
-  description   String?
-  price         Float
-  stockQuantity Int     @default(0)
+  id          String   @id @default(uuid())
+  name        String
+  price       Float
+  stock       Int
+  unit        String?
 
-  // Timestamps and Soft Delete
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  deletedAt DateTime?
+  vendorId    String
+  vendor      Vendor @relation(fields: [vendorId], references: [id])
 
-  // Relations
-  vendor        Vendor         @relation(fields: [vendorId], references: [id])
-  orderItems    OrderItem[]
-  inventoryLogs InventoryLog[]
-
-  @@index([vendorId, name])
-}
-
-model InventoryLog {
-  id            String                @id @default(uuid())
-  productId     String
-  previousStock Int
-  newStock      Int
-  reason        InventoryChangeReason
-
-  createdAt DateTime @default(now())
-
-  // Relations
-  product Product @relation(fields: [productId], references: [id])
+  createdAt   DateTime @default(now())
 }
 
 model Order {
-  id          String      @id @default(uuid())
-  customerId  String
+  id          String   @id @default(uuid())
+
+  customerName String?
+  customerPhone String?
+
+  totalAmount Float?
+
+  status      String @default("pending")
+
   vendorId    String
-  status      OrderStatus @default(PENDING)
-  totalAmount Float
-  notes       String?
+  vendor      Vendor @relation(fields: [vendorId], references: [id])
 
-  // Timestamps and Soft Delete
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  deletedAt DateTime?
-
-  // Relations
-  customer   Customer    @relation(fields: [customerId], references: [id])
-  vendor     Vendor      @relation(fields: [vendorId], references: [id])
-  orderItems OrderItem[]
-
-  @@index([customerId, status])
-  @@index([vendorId, status])
-}
-
-model OrderItem {
-  id        String @id @default(uuid())
-  orderId   String
-  productId String
-  quantity  Int
-  unitPrice Float
-
-  // Relations
-  order   Order   @relation(fields: [orderId], references: [id])
-  product Product @relation(fields: [productId], references: [id])
-}
-
-model VoiceCommand {
-  id           String  @id @default(uuid())
-  vendorId     String
-  audioUrl     String
-  transcript   String?
-  parsedAction Json?
-  isApplied    Boolean @default(false)
-
-  createdAt DateTime @default(now())
-
-  // Relations
-  vendor Vendor @relation(fields: [vendorId], references: [id])
-}
-
-model WhatsAppMessage {
-  id         String           @id @default(uuid())
-  messageId  String           @unique
-  vendorId   String?
-  customerId String?
-  body       String
-  direction  MessageDirection
-  status     String? // e.g., 'sent', 'delivered', 'read'
-
-  createdAt DateTime @default(now())
-
-  // Relations
-  vendor   Vendor?   @relation(fields: [vendorId], references: [id])
-  customer Customer? @relation(fields: [customerId], references: [id])
-}
-
-model Review {
-  id         String  @id @default(uuid())
-  customerId String
-  vendorId   String
-  rating     Int     @db.SmallInt // 1 to 5
-  comment    String?
-
-  // Timestamps and Soft Delete
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  deletedAt DateTime?
-
-  // Relations
-  customer Customer @relation(fields: [customerId], references: [id])
-  vendor   Vendor   @relation(fields: [vendorId], references: [id])
+  createdAt   DateTime @default(now())
 }

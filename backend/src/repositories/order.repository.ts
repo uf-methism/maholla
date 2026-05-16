@@ -38,7 +38,7 @@ export const orderRepository = {
     });
 
     // Create order + deduct stock in a single transaction
-    const order = await prisma.$transaction(async (tx) => {
+    const order = await prisma.$transaction(async (tx: { order: { create: (arg0: { data: { customerId: string; vendorId: string; totalAmount: number; notes: string | undefined; orderItems: { create: { productId: string; quantity: number; unitPrice: any; }[]; }; }; include: { orderItems: boolean; }; }) => any; }; product: { update: (arg0: { where: { id: string; }; data: { stockQuantity: { decrement: number; }; }; }) => any; }; inventoryLog: { create: (arg0: { data: { productId: string; previousStock: any; newStock: number; reason: string; }; }) => any; }; }) => {
       const newOrder = await tx.order.create({
         data: {
           customerId: data.customerId,
