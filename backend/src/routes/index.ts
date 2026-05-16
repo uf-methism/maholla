@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import vendorRoutes from './vendor.routes';
 import orderRoutes from './order.routes';
+import whatsappRoutes from './whatsapp.routes';
 
 const router = Router();
 
@@ -12,5 +13,6 @@ router.get('/health', (req, res) => {
 // Mount Routes
 router.use('/vendors', vendorRoutes);
 router.use('/orders', orderRoutes); // For global order routes (e.g. createOrder)
+router.use('/whatsapp', whatsappRoutes);
 
 export default router;

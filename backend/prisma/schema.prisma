@@ -57,6 +57,7 @@ model Vendor {
   reviews          Review[]
   voiceCommands    VoiceCommand[]
   whatsappMessages WhatsAppMessage[]
+  activeCustomers  Customer[]        @relation("CustomerActiveVendor")
 
   @@index([latitude, longitude])
 }
@@ -69,6 +70,15 @@ model Customer {
   latitude  Float?
   longitude Float?
 
+  // Session Management
+  activeVendorId       String?
+  sessionExpiresAt     DateTime?
+  lastSelectedVendorId String?
+
+  // Order Flow Management
+  orderState           String?   // 'BUILDING_CART', 'CONFIRMING_ORDER'
+  draftOrder           Json?     // Stores { items: [...] }
+
   // Timestamps and Soft Delete
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
@@ -78,6 +88,7 @@ model Customer {
   orders           Order[]
   reviews          Review[]
   whatsappMessages WhatsAppMessage[]
+  activeVendor     Vendor?           @relation("CustomerActiveVendor", fields: [activeVendorId], references: [id])
 }
 
 model Product {

@@ -35,7 +35,7 @@ app.use('/api', apiLimiter);
 app.use('/api/v1', appRouter);
 
 // 404 Handler
-app.use('*', (req, res, next) => {
+app.use((req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
 });
 
