@@ -9,6 +9,15 @@ const envSchema = z.object({
   DATABASE_URL: z.string().url(),
   REDIS_URL: z.string().url().optional(),
   CORS_ORIGIN: z.string().default('*'),
+  
+  // Gemini AI
+  GEMINI_API_KEY: z.string().optional(),
+  GEMINI_MODEL: z.string().default('gemini-1.5-flash'),
+
+  // Twilio
+  TWILIO_ACCOUNT_SID: z.string().optional(),
+  TWILIO_AUTH_TOKEN: z.string().min(1),
+  TWILIO_WHATSAPP_NUMBER: z.string().min(1),
 });
 
 const _env = envSchema.safeParse(process.env);
