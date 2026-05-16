@@ -34,8 +34,8 @@ app.use('/api', apiLimiter);
 // API Routes
 app.use('/api/v1', appRouter);
 
-// 404 Handler
-app.use('*', (req, res, next) => {
+// 404 Handler — Express 5 requires named wildcards
+app.use('{*path}', (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
 });
 
