@@ -8,6 +8,7 @@ import {
 } from '../validators/api.validators';
 import productRoutes from './product.routes';
 import orderRoutes from './order.routes';
+import voiceRoutes from './voice.routes';
 
 const router = Router();
 
@@ -20,5 +21,6 @@ router.patch('/:id', validateRequest(updateVendorSchema), vendorController.updat
 // Nested routes
 router.use('/:vendorId/products', productRoutes);
 router.use('/:vendorId/orders', orderRoutes);
+router.use('/:vendorId', voiceRoutes);
 
 export default router;
