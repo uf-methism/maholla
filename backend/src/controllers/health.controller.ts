@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import prisma from '../config/prismaClient.config';
+import prisma from '../config/prismaClient';
 import { redis } from '../utils/redis.util';
 
 export const getHealthStatus = async (_req: Request, res: Response) => {

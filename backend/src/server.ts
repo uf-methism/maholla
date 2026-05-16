@@ -1,7 +1,7 @@
 import app from './app';
 import { env } from './config/env.config';
 import { logger } from './utils/logger.util';
-import prisma from './config/prismaClient.config';
+import prisma from './config/prismaClient';
 import { redis } from './utils/redis.util';
 
 const startServer = async () => {

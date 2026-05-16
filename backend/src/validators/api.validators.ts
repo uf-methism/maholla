@@ -26,7 +26,7 @@ export const nearbyVendorsSchema = z.object({
   query: z.object({
     lat: z.string().transform(Number),
     lng: z.string().transform(Number),
-    radius: z.string().transform(Number).optional().default('5'),
+    radius: z.string().transform(Number).optional().default(5),
     search: z.string().optional(),
     page: z.string().optional(),
     limit: z.string().optional(),

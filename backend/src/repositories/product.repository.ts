@@ -1,4 +1,4 @@
-import prisma from '../config/prismaClient.config';
+import prisma from '../config/prismaClient';
 import { AppError } from '../utils/appError.util';
 import {
   CreateProductInput,

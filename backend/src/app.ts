@@ -6,7 +6,7 @@ import { env } from './config/env.config';
 import { errorHandler } from './middlewares/error.middleware';
 import { requestLogger } from './middlewares/logger.middleware';
 import { apiLimiter } from './middlewares/rateLimiter.middleware';
-import v1Router from './routes/v1';
+import appRouter from './routes/index';
 import { AppError } from './utils/appError.util';
 
 const app: Application = express();
@@ -32,7 +32,7 @@ app.use(requestLogger);
 app.use('/api', apiLimiter);
 
 // API Routes
-app.use('/api/v1', v1Router);
+app.use('/api/v1', appRouter);
 
 // 404 Handler
 app.use('*', (req, res, next) => {

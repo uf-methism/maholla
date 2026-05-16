@@ -1,5 +1,5 @@
 import { OrderStatus } from '@prisma/client';
-import prisma from '../config/prismaClient.config';
+import prisma from '../config/prismaClient';
 import { AppError } from '../utils/appError.util';
 import { CreateOrderInput } from '../validators/api.validators';
 import { PaginationParams } from '../utils/pagination.util';
@@ -25,7 +25,7 @@ export const orderRepository = {
     // Calculate total and prepare order items
     let totalAmount = 0;
     const orderItemsData = data.items.map((item) => {
-      const product = products.find((p) => p.id === item.productId)!;
+      const product = products.find((p: { id: string; }) => p.id === item.productId)!;
       if (product.stockQuantity < item.quantity) {
         throw new AppError(`Insufficient stock for product: ${product.name}`, 400);
       }
@@ -52,7 +52,7 @@ export const orderRepository = {
 
       // Deduct stock and log each change
       for (const item of data.items) {
-        const product = products.find((p) => p.id === item.productId)!;
+        const product = products.find((p: { id: string; }) => p.id === item.productId)!;
         await tx.product.update({
           where: { id: item.productId },
           data: { stockQuantity: { decrement: item.quantity } },
